@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Text.Outlining;
 using Microsoft.VisualStudio.Utilities;
 using System;
 using System.ComponentModel.Composition;
+using System.Text.RegularExpressions;
 
 namespace Duy.AutoCollapseUsing
 {
@@ -57,7 +58,7 @@ namespace Duy.AutoCollapseUsing
 
                 var usingText = collapsible?.Extent?.GetText(_textView.TextSnapshot);
 
-                var isUsingRegion = !string.IsNullOrEmpty(usingText) && usingText.Contains("using ");
+                var isUsingRegion = !string.IsNullOrEmpty(usingText) && Regex.IsMatch(usingText, "using .*;") && Regex.Matches(usingText, "using ").Count >= 2;
 
                 if (isUsingRegion)
                 {
