@@ -10,7 +10,7 @@ namespace Duy.AutoCollapseUsing
     [Export(typeof(IWpfTextViewCreationListener))]
     [TextViewRole(PredefinedTextViewRoles.Document)]
     [ContentType("CSharp")]
-    public class AutoCollapseUsingListener : IWpfTextViewCreationListener
+    internal sealed class AutoCollapseUsingListener : IWpfTextViewCreationListener
     {
         [Import]
         internal IOutliningManagerService OutliningManagerService { get; set; }
