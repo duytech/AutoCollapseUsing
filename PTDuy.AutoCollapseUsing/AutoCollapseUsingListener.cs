@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Outlining;
 using Microsoft.VisualStudio.Utilities;
@@ -56,12 +57,16 @@ namespace Duy.AutoCollapseUsing
                 if (_isEverCollapse)
                     return false;
 
-                var usingText = collapsible?.Extent?.GetText(_textView.TextSnapshot);
+                string regionText = collapsible?.Extent?.GetText(_textView.TextSnapshot);
+                bool isUsingRegion = IsUsingRegion(regionText);
 
-                var isUsingRegion = !string.IsNullOrEmpty(usingText) && Regex.IsMatch(usingText, "using .*;") && Regex.Matches(usingText, "using ").Count >= 2;
+                bool isCaretFound = IsCaretInRegion(collapsible);
 
                 if (isUsingRegion)
                 {
+                    if (isCaretFound)
+                        return false;
+
                     _isEverCollapse = true;
 
                     return true;
@@ -71,10 +76,34 @@ namespace Duy.AutoCollapseUsing
             }
             catch (Exception ex)
             {
-                ActivityLog.LogError("AutoCollapseUsing", ex.Message);
+                ActivityLog.LogError("AutoCollapseUsing", ex.ToString());
 
                 return false;
             }
+        }
+
+        private bool IsUsingRegion(string regionText)
+        {
+            if (string.IsNullOrEmpty(regionText))
+                return false;
+
+            string[] lines = Regex.Split(regionText, Environment.NewLine);
+            bool isUsingRegion = lines != null && lines.Length > 1 && Regex.IsMatch(lines[1], "using .*;");
+
+            return isUsingRegion;
+        }
+
+        private bool IsCaretInRegion(ICollapsible collapsible)
+        {
+            if (collapsible == null || collapsible.Extent == null)
+                return false;
+
+            ITextSnapshot textSnapshot = _textView.TextSnapshot;
+            int startLine = collapsible.Extent.GetStartPoint(textSnapshot).GetContainingLine().LineNumber;
+            int endLine = collapsible.Extent.GetEndPoint(textSnapshot).GetContainingLine().LineNumber;
+            int caretLine = _textView.Caret.Position.BufferPosition.GetContainingLine().LineNumber;
+
+            return startLine <= caretLine && endLine + 1 >= caretLine;
         }
     }
 }
