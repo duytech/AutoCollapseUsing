@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="AutoCollapseUsing.e878f847-c6b9-4087-9f4d-6f65f1c950a8" Version="2.0" Language="en-US" Publisher="Duy Pham" />
+        <Identity Id="AutoCollapseUsing.e878f847-c6b9-4087-9f4d-6f65f1c950a8" Version="1.2" Language="en-US" Publisher="Duy Pham" />
         <DisplayName>AutoCollapseUsing</DisplayName>
         <Description xml:space="preserve">This extension will help to collapse USING region automatically.</Description>
     </Metadata>

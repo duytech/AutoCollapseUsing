@@ -60,12 +60,12 @@ namespace Duy.AutoCollapseUsing
                 string regionText = collapsible?.Extent?.GetText(_textView.TextSnapshot);
                 bool isUsingRegion = IsUsingRegion(regionText);
 
-                bool isCaretFound = IsCaretInRegion(collapsible);
-
                 if (isUsingRegion)
                 {
-                    if (isCaretFound)
-                        return false;
+                    //bool isCaretFound = IsCaretInRegion(collapsible);
+
+                    //if (isCaretFound)
+                    //    return false;
 
                     _isEverCollapse = true;
 
@@ -101,6 +101,7 @@ namespace Duy.AutoCollapseUsing
             ITextSnapshot textSnapshot = _textView.TextSnapshot;
             int startLine = collapsible.Extent.GetStartPoint(textSnapshot).GetContainingLine().LineNumber;
             int endLine = collapsible.Extent.GetEndPoint(textSnapshot).GetContainingLine().LineNumber;
+            var cline = _textView.Caret.Position.BufferPosition.GetContainingLine();
             int caretLine = _textView.Caret.Position.BufferPosition.GetContainingLine().LineNumber;
 
             return startLine <= caretLine && endLine + 1 >= caretLine;
