@@ -88,7 +88,7 @@ namespace Duy.AutoCollapseUsing
                 return false;
 
             string[] lines = Regex.Split(regionText, Environment.NewLine);
-            bool isUsingRegion = lines != null && lines.Length > 1 && Regex.IsMatch(lines[1], "using .*;");
+            bool isUsingRegion = lines != null && lines.Length > 1 && Regex.IsMatch(lines[1], @"(?<=\b)using\s+(?:static\s+|\S+\s*=\s*)?\S+;");
 
             return isUsingRegion;
         }
